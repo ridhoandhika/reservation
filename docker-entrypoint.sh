@@ -1,43 +1,33 @@
 #!/bin/bash
 set -e
 
-echo "Starting Laravel..."
+# Create required directories if they don't exist
+mkdir -p /var/www/html/storage/framework/cache
+mkdir -p /var/www/html/storage/framework/sessions
+mkdir -p /var/www/html/storage/framework/views
+mkdir -p /var/www/html/storage/app/public
+mkdir -p /var/www/html/bootstrap/cache
 
-mkdir -p storage/framework/{cache,sessions,views} bootstrap/cache
-chown -R application:application storage bootstrap/cache
-chmod -R 775 storage bootstrap/cache
+# Set proper permissions
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-if [ -z "$APP_KEY" ]; then
-  echo "ERROR: APP_KEY not set"
-  exit 1
+# Generate application key if it doesn't exist
+if [ -z "$(grep '^APP_KEY=' .env | grep -v '=$')" ]; then
+    php artisan key:generate
 fi
 
-echo "Waiting for DB..."
-until mariadb \
-  --protocol=tcp \
-  --ssl=OFF \
-  -h "$DB_HOST" \
-  -u "$DB_USERNAME" \
-  -p"$DB_PASSWORD" \
-  -P 3306 \
-  -e "SELECT 1;" >/dev/null 2>&1; do
-  echo "Waiting for DB..."
-  sleep 2
-done
+# Run migrations if the database is ready
+if [ "$DB_HOST" != "" ]; then
+    # Wait for the database to be ready
+    until nc -z -v -w30 $DB_HOST 3306; do
+      echo "Waiting for database connection..."
+      # Wait for 5 seconds before check again
+      sleep 5
+    done
 
-echo "DB connected"
+    php artisan migrate --force
+fi
 
-
-php artisan migrate --force || true
-
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
-
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
-
-echo "Laravel ready"
-
+# Execute the provided command (which is typically php-fpm)
 exec "$@"
