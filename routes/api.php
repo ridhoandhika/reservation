@@ -4,6 +4,7 @@ use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlaystationController;
 use App\Http\Controllers\RoomController;
+use Illuminate\Http\Request;
 
 Route::get('/status', function () {
     return response()->json(['status' => 'ok']);
@@ -26,3 +27,8 @@ Route::get('/rooms/{id}', [RoomController::class, 'show']);
 Route::post('/rooms', [RoomController::class, 'create']);
 
 Route::post('/bookings', [BookingController::class, 'store']);
+Route::post('/mail', function (Request $request) {
+    dispatch(new \App\Jobs\SendEmailJob($request->email));
+
+    return response()->json(['status' => 'email dispatched'], 200);
+});
