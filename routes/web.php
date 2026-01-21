@@ -11,3 +11,7 @@ Route::get('/status', function () {
 Route::get('/', function () {
     return Inertia::render('Home');
 });
+
+Route::get('/booking', function () {
+    return Inertia::render('Booking');
+});

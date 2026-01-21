@@ -20,4 +20,9 @@ interface BookingSlotRepository
         string $startTime,
         string $endTime
     ): Collection;
+
+    public function getNextBookingStart(
+        string $roomId,
+        string $startTime
+    ): ?string;
 }

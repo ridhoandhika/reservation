@@ -32,8 +32,7 @@ class BookingServiceTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it_can_create_booking_successfully()
+    public function test_can_create_booking_successfully()
     {
         $payload = [
             'room_id' => 'room-uuid',
@@ -87,8 +86,7 @@ class BookingServiceTest extends TestCase
         $this->assertArrayHasKey('booking', $response['output']);
     }
 
-    /** @test */
-    public function it_fails_when_slot_is_not_available()
+    public function test_fails_when_slot_is_not_available()
     {
         $payload = [
             'room_id' => 'room-uuid',

@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlaystationController;
+use App\Http\Controllers\RoomAvailabilityController;
 use App\Http\Controllers\RoomController;
 use Illuminate\Http\Request;
 
@@ -32,3 +33,16 @@ Route::post('/mail', function (Request $request) {
 
     return response()->json(['status' => 'email dispatched'], 200);
 });
+
+Route::get('/rooms/{roomId}/available-slots', [RoomAvailabilityController::class, 'index']);
+
+Route::get(
+    '/rooms/{roomId}/available-start-times',
+    [RoomAvailabilityController::class, 'startTimes']
+);
+
+Route::get(
+    '/rooms/{roomId}/available-durations',
+    [RoomAvailabilityController::class, 'durations']
+);
+

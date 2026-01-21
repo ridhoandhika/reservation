@@ -10,8 +10,7 @@ class DoubleBookingTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function two_users_cannot_book_the_same_room_and_time_slot()
+    public function test_two_users_cannot_book_the_same_room_and_time_slot()
     {
         // 1️⃣ Arrange
         $room = Room::factory()->create();
