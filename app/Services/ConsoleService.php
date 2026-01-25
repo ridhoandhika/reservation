@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Repositories\PlaystationRepository;
+use App\Repositories\ConsoleRepository;
 
-class PlaystationService
+class ConsoleService
 {
     public function __construct(
-        protected PlaystationRepository $repo
+        protected ConsoleRepository $repo
     ) {}
 
     public function list(int $perPage = 10): array
@@ -33,9 +33,9 @@ class PlaystationService
         $output['status'] = 200;
         $output['message'] = 'success';
         
-        $playstation = $this->repo->create($data);
+        $console = $this->repo->create($data);
 
-        if ($playstation === null) {
+        if ($console === null) {
             $output['status'] = 500;
             $output['message'] = 'failed';
 
@@ -43,7 +43,7 @@ class PlaystationService
         }
 
         $output['output'] = [
-            'playstation' => $playstation,
+            'playstation' => $console,
         ];
 
         return $output;

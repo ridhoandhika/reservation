@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->uuid("id")->primary();
             $table->string("name");
-            $table->uuid("playstation_id");
+            $table->enum('type', [
+                'reguler',
+                'vip',
+                'vvip'
+            ])->default('reguler');
             $table->decimal("price_per_hour", 8, 2);
             $table->timestamps();
-
-            $table->index('playstation_id');
         });
     }
 

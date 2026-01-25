@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RoomType;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,10 +14,15 @@ class Room extends Model
     protected $keyType = 'string';
     public $incrementing = false;
 
+    protected $casts = [
+        'type' => RoomType::class,
+        'price_per_hour' => 'integer',
+    ];
+
     protected $fillable = [
         'id',
         'name',
-        'playstation_id',
+        'type',
         'price_per_hour'
     ];
 
@@ -30,8 +36,13 @@ class Room extends Model
         return $this->hasMany(Booking::class, 'room_id', 'id');
     }
 
-    public function playstation()
+    public function consoles()
     {
-        return $this->belongsTo(Playstation::class, 'playstation_id', 'id');
+        return $this->belongsToMany(Console::class, 'console_room');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(RoomImage::class);
     }
 }

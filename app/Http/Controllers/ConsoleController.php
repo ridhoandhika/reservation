@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreatePlaystationRequest;
-use App\Http\Requests\UpdatePlaystationRequest;
-use App\Services\PlaystationService;
+use App\Http\Requests\CreateConsoleRequest;
+use App\Http\Requests\UpdateConsoleRequest;
+use App\Services\ConsoleService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class PlaystationController extends Controller
+class ConsoleController extends Controller
 {
 
     public function __construct(
-        protected PlaystationService $service
+        protected ConsoleService $service
     ) {}
     /**
      * Display a listing of the resource.
@@ -26,19 +26,19 @@ class PlaystationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(CreatePlaystationRequest $request)
+    public function create(CreateConsoleRequest $request)
     {
         try {
             $playsations =  $this->service->create($request->all());
             return $this->baseResponse($playsations, 200);
         } catch (\Throwable $e) {
-            Log::error('Playstation creation failed', [
+            Log::error('Console creation failed', [
                 'message' => $e->getMessage(),
                 'time' => now()
             ]);
             return $this->baseResponse([
                 'status'  => 500,
-                'message' => 'Playstation creation failed',
+                'message' => 'Console creation failed',
             ], 500);
         }
     }
@@ -63,20 +63,20 @@ class PlaystationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePlaystationRequest $request, string $id)
+    public function update(UpdateConsoleRequest $request, string $id)
     {
         try {
             //code...
             $playsations = $this->service->update($id, $request->all());
             return $this->baseResponse($playsations, 200);
         } catch (\Throwable $e) {
-            Log::error('Playstation creation failed', [
+            Log::error('Console creation failed', [
                 'message' => $e->getMessage(),
                 'time' => now()
             ]);
             return $this->baseResponse([
                 'status'  => 500,
-                'message' => 'Playstation update failed',
+                'message' => 'Console update failed',
             ], 500);
         }
     }

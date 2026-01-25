@@ -21,8 +21,11 @@
     "dependencies": {
         "@heroui/react": "^2.8.7",
         "@inertiajs/react": "^2.3.8",
+        "camelcase-keys": "^10.0.1",
         "framer-motion": "^12.25.0",
         "react": "^19.2.3",
-        "react-dom": "^19.2.3"
+        "react-dom": "^19.2.3",
+        "snakecase-keys": "^9.0.2",
+        "swiper": "^12.0.3"
     }
 }

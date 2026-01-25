@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Playstation extends Model
+class Console extends Model
 {
     use HasFactory, HasUuids;
 
@@ -14,17 +14,12 @@ class Playstation extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'type',
+        'type'
     ];
 
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-    ];
-
-    // relasi yang benar
     public function rooms()
     {
-        return $this->hasMany(Room::class, 'playstation_id', 'id');
+        return $this->belongsToMany(Room::class, 'console_room');
     }
 }
+

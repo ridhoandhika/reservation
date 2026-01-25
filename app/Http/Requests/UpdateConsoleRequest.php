@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Log;
 
-class CreatePlaystationRequest extends FormRequest
+class UpdateConsoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,29 +24,15 @@ class CreatePlaystationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|string|max:255',
-        ];
-    }
-
-    // Optional: Define custom messages
-    public function messages(): array
-    {
-        return [
-            'type.required' => 'A type is required',
-            'type.string' => 'The type must be a string',
-            'type.max' => 'The type may not be greater than 255 characters',
+            'type' => 'sometimes|required|string|max:255',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-        Log::error('Playstation creation failed', [
-            'message' => $validator->errors(),
-            'time' => now()
-        ]);
         throw new HttpResponseException(
             response()->json([
-                'error_code' => 400,
+                'status' => 400,
                 'message' => 'Bad Request',
             ], 200)
         );

@@ -20,9 +20,13 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
+      - APP_X_API_KEY=${APP_X_API_KEY}
 
   # Nginx Web Server
   webserver:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
     image: nginx:alpine
     container_name: dockerized-laravel-webserver
     restart: unless-stopped
@@ -31,7 +35,7 @@ services:
     volumes:
       - ./:/var/www/html
       # Use a single file mount instead of a directory
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      # - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     networks:
       - dockerized-laravel-network
     depends_on:
@@ -53,6 +57,22 @@ services:
       - dockerized-laravel-network
     ports:
       - "3306:3306"
+
+  db_test:
+    image: mysql:8.0
+    container_name: dockerized-laravel-db-test
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE_TEST}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD_TEST}
+      - MYSQL_PASSWORD=${DB_PASSWORD_TEST}
+      - MYSQL_USER=${DB_USERNAME_TEST}
+    volumes:
+      - dockerized-laravel-data-test:/var/lib/mysql
+    networks:
+      - dockerized-laravel-network
+    ports:
+      - "3307:3306"
 
   # Redis for Cache and Queue
   # redis:
@@ -89,4 +109,6 @@ networks:
 # Volumes
 volumes:
   dockerized-laravel-data:
+    driver: local
+  dockerized-laravel-data-test:
     driver: local

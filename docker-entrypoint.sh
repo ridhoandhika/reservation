@@ -17,6 +17,17 @@ if [ -z "$(grep '^APP_KEY=' .env | grep -v '=$')" ]; then
     php artisan key:generate
 fi
 
+# Generate APP_X_API_KEY if it doesn't exist
+if ! grep -q "^APP_X_API_KEY=" .env || [ -z "$(grep "^APP_X_API_KEY=" .env | cut -d '=' -f2)" ]; then
+    echo "Generating APP_X_API_KEY..."
+    API_KEY=$(php -r "echo bin2hex(random_bytes(32));")
+    if grep -q "^APP_X_API_KEY=" .env; then
+        sed -i "s/^APP_X_API_KEY=.*/APP_X_API_KEY=$API_KEY/" .env
+    else
+        echo "APP_X_API_KEY=$API_KEY" >> .env
+    fi
+fi
+
 # Run migrations if the database is ready
 if [ "$DB_HOST" != "" ]; then
     # Wait for the database to be ready

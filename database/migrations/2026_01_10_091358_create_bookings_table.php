@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('room_id')->constrained('rooms')->cascadeOnDelete();
+            $table->uuid('room_id');
+            $table->foreign('room_id')->references('id')->on('rooms')->cascadeOnDelete();
             $table->string('name');
             $table->string('email');
             $table->string('phone_number')->nullable();

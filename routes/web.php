@@ -15,3 +15,7 @@ Route::get('/', function () {
 Route::get('/booking', function () {
     return Inertia::render('Booking');
 });
+
+Route::get('/room/{id}', function ($id) {
+    return Inertia::render('Room', ['roomId' => $id]);
+})->name('room.show');

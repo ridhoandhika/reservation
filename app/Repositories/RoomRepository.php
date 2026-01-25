@@ -9,8 +9,8 @@ interface RoomRepository
 {
     public function all(int $perPage = 15): LengthAwarePaginator;
     public function find(string $id): ?Room;
-    public function create(array $data): Room;
-    public function update(string $id, array $data): bool;
+    public function create(array $data, array $images = []): Room;
+    public function update(string $id, array $data, array $consoles = [], array $images = []): bool;
     public function delete(string $id): bool;
 }
 

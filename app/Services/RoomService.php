@@ -2,9 +2,8 @@
 
 namespace App\Services;
 
+use App\Http\Resources\RoomResource;
 use App\Repositories\RoomRepository;
-use App\Models\Room;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class RoomService
 {
@@ -14,13 +13,16 @@ class RoomService
 
     public function list(int $perPage = 10): array
     {
-         $output['status'] = 200;
+        $output['status'] = 200;
         $output['message'] = 'success';
 
         $data = $this->repo->all($perPage);
-       
+
+
+        $rooms = RoomResource::collection($data->items());
+
         $output['output'] = [
-            'playstations' => $data->items(),
+            'rooms' => @$rooms,
             'attribute' => [
                 'total' => $data->total(),
                 'per_page' => $data->perPage(),
@@ -32,12 +34,17 @@ class RoomService
 
     public function create(array $data): array
     {
-        // tambahkan logika bisnis/transformasi di sini bila perlu
-        $room = $this->repo->create($data);
-
         $output['status'] = 200;
         $output['message'] = 'success';
-        if( $room === null ) {
+
+        // pisahkan images
+        $images = $data['images'] ?? [];
+        unset($data['images']);
+        // tambahkan logika bisnis/transformasi di sini bila perlu
+
+        // kirim data room + images ke repo
+        $room = $this->repo->create($data, $images);
+        if (!$room) {
             $output['status'] = 500;
             $output['message'] = 'failed';
 
@@ -49,12 +56,21 @@ class RoomService
 
     public function update(string $id, array $data): array
     {
-        $room = $this->repo->update($id, $data);
-
         $output['status'] = 200;
         $output['message'] = 'success';
-        
-        if( $room === null ) {
+
+        // pisahkan consoles
+        $consoles = $data['consoles'] ?? [];
+        unset($data['consoles']);
+
+        // pisahkan images
+        $images = $data['images'] ?? [];
+        unset($data['images']);
+
+        // kirim data room + images ke repo
+        $room = $this->repo->update($id, $data, $consoles, $images);
+
+        if (!$room) {
             $output['status'] = 500;
             $output['message'] = 'failed';
 
@@ -66,12 +82,13 @@ class RoomService
 
     public function delete(string $id): array
     {
-        $room = $this->repo->delete($id);
-
         $output['status'] = 200;
         $output['message'] = 'success';
 
-        if ($room === null) {
+        $room = $this->repo->delete($id);
+
+
+        if (!$room) {
             $output['status'] = 500;
             $output['message'] = 'failed';
 
@@ -84,11 +101,11 @@ class RoomService
     public function find(string $id): array
     {
         $room = $this->repo->find($id);
-
+        
         $output['status'] = 200;
         $output['message'] = 'success';
         $output['output'] = [
-            'room' => $room,
+            'room' => new RoomResource($room),
         ];
 
         return $output;

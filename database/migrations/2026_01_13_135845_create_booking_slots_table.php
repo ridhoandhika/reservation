@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('booking_slots', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('booking_id')->constrained('bookings')->cascadeOnDelete();
+            $table->foreignUuid('booking_id')->references('id')->on('bookings')->cascadeOnDelete();
             $table->uuid('room_id');
 
             $table->dateTime('start_time');

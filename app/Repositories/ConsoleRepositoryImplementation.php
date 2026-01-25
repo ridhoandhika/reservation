@@ -2,24 +2,24 @@
 
 namespace App\Repositories;
 
-use App\Models\Playstation;
+use App\Models\Console;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class PlaystationRepositoryImplementation implements PlaystationRepository
+class ConsoleRepositoryImplementation implements ConsoleRepository
 {
     public function all(int $perPage = 15): LengthAwarePaginator
     {
-        return Playstation::query()->paginate($perPage);
+        return Console::query()->paginate($perPage);
     }
 
-    public function find(string $id): ?Playstation
+    public function find(string $id): ?Console
     {
-        return Playstation::find($id);
+        return Console::find($id);
     }
 
-    public function create(array $data): Playstation
+    public function create(array $data): Console
     {
-        return Playstation::create($data);
+        return Console::create($data);
     }
 
     public function update(string $id, array $data): bool

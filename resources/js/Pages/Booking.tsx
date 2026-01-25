@@ -11,7 +11,7 @@ export default function Booking() {
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold mb-4">Booking Page</h1>
-            <p>This is the booking page content.</p>
+            <p>This is the booking page content. hapus aja</p>
             <Button onPress={handleClick} variant="flat" className="text-blue-500 underline">Go to Home</Button>
         </div>
     )
