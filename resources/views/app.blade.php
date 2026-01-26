@@ -1,4 +1,4 @@
-<html class="light" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html data-theme="dark"  lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta name="csrf-token" content="{{ csrf_token() }}">
 

@@ -27,7 +27,7 @@ export default function Home() {
     }, [isStatic]);
 
     const handleClick = useCallback((roomId: string) => {
-        router.visit('/room/'+roomId);
+        router.visit('/'+roomId);
     }, [router])
 
 
@@ -50,7 +50,7 @@ export default function Home() {
         return (
             <>
                 {roomList.map((room) => (
-                    <Card className="p-0">
+                    <Card className="p-0 shadow-lg">
                         <CardHeader className="p-0" >
                             <Swiper
                                 className="w-full"
@@ -119,7 +119,7 @@ export default function Home() {
                                     </div>
                                     <div className="flex items-center gap-1.5 text-foreground/40 text-xs font-medium">
                                         <svg
-                                            className="size-5 text-background"
+                                            className="size-5 text-foreground/40"
                                             viewBox="0 0 32 32"
                                             fill="currentColor"
                                             xmlns="http://www.w3.org/2000/svg"
@@ -303,11 +303,11 @@ export default function Home() {
             </div>
             <div className="sticky top-[50px] z-40 bg-background/95 backdrop-blur-sm py-4 -mx-4 px-4 mb-6 border-b border-foreground/5 md:static md:bg-transparent md:border-none md:p-0 md:m-0 !mb-4">
                 <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-                    <div className="relative w-full md:max-w-md group">
+                    <div className="relative w-full md:max-w-md group md:border md:border-foreground/10 md:rounded-lg">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-foreground/40 group-focus-within:text-primary transition-colors">
                             <span className="material-symbols-outlined">search</span>
                         </div>
-                        <input className="block w-full pl-18 pr-3 py-3 border-none rounded-xl leading-5 bg-surface-highlight text-foreground placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary transition-shadow sm:text-sm" placeholder="Search rooms, consoles, games..." type="text" />
+                        <input className="block w-full pl-18 pr-3 py-3 border-foreground/5 rounded-xl leading-5 bg- text-foreground placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary transition-shadow sm:text-sm" placeholder="Search rooms, consoles, games..." type="text" />
                     </div>
                 </div>
             </div>

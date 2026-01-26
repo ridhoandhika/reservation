@@ -4,11 +4,14 @@ namespace App\Services;
 
 use App\Repositories\BookingSlotRepository;
 use App\Exceptions\BusinessException;
+use App\Repositories\RoomRepository;
+use Carbon\Carbon;
 
 class BookingSlotService
 {
     public function __construct(
-        protected BookingSlotRepository $repo
+        protected BookingSlotRepository $repo,
+        protected RoomRepository $roomRepo
     ) {}
 
     public function createSlotsForBooking(
@@ -18,25 +21,53 @@ class BookingSlotService
     ): array {
         $created = [];
 
+        $room = $this->roomRepo->find($roomId);
+        if (! $room) {
+            throw new BusinessException('Room not found', 404);
+        }
+
+        $pricePerHour = $room->price_per_hour;
+
+
+
         foreach ($slots as $slot) {
-            if (! $this->repo->isAvailable(
-                $roomId,
-                $slot['start_time'],
-                $slot['end_time']
-            )) {
+            $start = Carbon::parse($slot['start_time']);
+            $end   = Carbon::parse($slot['end_time']);
+
+            /** minimal 1 jam */
+            if ($start->diffInMinutes($end) < 60) {
                 throw new BusinessException(
-                    "Room not available from {$slot['start_time']} to {$slot['end_time']}",
-                    409 // conflict
+                    'Minimum booking duration is 1 hour',
+                    422
                 );
             }
 
-            $created[] = $this->repo->create([
-                'booking_id' => $bookingId,
-                'room_id'    => $roomId,
-                'start_time' => $slot['start_time'],
-                'end_time'   => $slot['end_time'],
-                'price'      => $slot['price'],
-            ]);
+            /** split per jam */
+            while ($start < $end) {
+
+                $slotEnd = $start->copy()->addHour();
+
+                if (! $this->repo->isAvailable(
+                    $roomId,
+                    $start->toDateTimeString(),
+                    $slotEnd->toDateTimeString()
+                )) {
+                    throw new BusinessException(
+                        "Room not available from {$start} to {$slotEnd}",
+                        409
+                    );
+                }
+
+                $created[] = $this->repo->create([
+                    'booking_id' => $bookingId,
+                    'room_id'    => $roomId,
+                    'start_time' => $start,
+                    'end_time'   => $slotEnd,
+                    'price'      => $pricePerHour,
+                ]);
+
+                $start = $slotEnd;
+            }
         }
 
         return $created;

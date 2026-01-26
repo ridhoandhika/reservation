@@ -27,10 +27,16 @@ Retrieved 2026-01-11, License - CC BY-SA 4.0
     scrollbar-width: none;
 }
 
+.rdp-today {
+    color: var(--heroui-foreground) !important;
+}
+
+
+
 
 :root {
     color-scheme: light;
-    --heroui-background: 0 0% 98%;
+    --heroui-background: 0 0% 98%%;
     --heroui-foreground-50: 0 0% 98.04%;
     --heroui-foreground-100: 240 4.76% 95.88%;
     --heroui-foreground-200: 240 5.88% 90%;
@@ -147,9 +153,9 @@ Retrieved 2026-01-11, License - CC BY-SA 4.0
     --heroui-hover-opacity: .8;
 }
 
-.dark {
+html[data-theme="dark"] {
     color-scheme: dark;
-    --heroui-background: 240 5.88% 10%;
+    --heroui-background: 240 3% 15%;
     --heroui-foreground-50: 240 5.88% 10%;
     --heroui-foreground-100: 240 3.7% 15.88%;
     --heroui-foreground-200: 240 5.26% 26.08%;
@@ -164,7 +170,7 @@ Retrieved 2026-01-11, License - CC BY-SA 4.0
     --heroui-focus: 212.02 100% 46.67%;
     --heroui-overlay: 0 0% 0%;
     --heroui-divider: 0 0% 100%;
-    --heroui-content1: 0 0% 0%;
+    --heroui-content1: 0 0% 12%;
     --heroui-content1-foreground: 0 0% 98.04%;
     --heroui-content2: 240 3.7% 15.88%;
     --heroui-content2-foreground: 240 4.76% 95.88%;
@@ -262,6 +268,6 @@ Retrieved 2026-01-11, License - CC BY-SA 4.0
     --heroui-border-width-large: 3px;
     --heroui-box-shadow-small: 0px 0px 5px 0px #0000000d, 0px 2px 10px 0px #0003, inset 0px 0px 1px 0px #ffffff26;
     --heroui-box-shadow-medium: 0px 0px 15px 0px #0000000f, 0px 2px 30px 0px #00000038, inset 0px 0px 1px 0px #ffffff26;
-    --heroui-box-shadow-large: 0px 0px 30px 0px #00000012, 0px 30px 60px 0px #00000042, inset 0px 0px 1px 0px #ffffff26;
+    --heroui-box-shadow-large: 0px 0px 30px 0px #8c5d5d12, 0px 30px 60px 0px #00000042, inset 0px 0px 1px 0px #ffffff26;
     --heroui-hover-opacity: .9;
 }

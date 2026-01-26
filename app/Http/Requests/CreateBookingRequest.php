@@ -33,7 +33,6 @@ class CreateBookingRequest extends FormRequest
             'slots'                 => ['required', 'array', 'min:1'],
             'slots.*.start_time'    => ['required', 'date'],
             'slots.*.end_time'      => ['required', 'date', 'after:slots.*.start_time'],
-            'slots.*.price'         => ['required', 'numeric', 'min:0'],
         ];
     }
 
